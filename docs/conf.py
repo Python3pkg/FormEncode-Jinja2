@@ -57,11 +57,11 @@ current_year = datetime.date.today().year
 if start_year == current_year:
     years = str(start_year)
 else:
-    years = u'{0}-{1}'.format(start_year, current_year)
+    years = '{0}-{1}'.format(start_year, current_year)
 # General information about the project.
-project = u'FormEncode-Jinja2'
-author = u'Eunchong Yu'
-copyright = u'{0}, {1}'.format(years, author)
+project = 'FormEncode-Jinja2'
+author = 'Eunchong Yu'
+copyright = '{0}, {1}'.format(years, author)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -209,7 +209,7 @@ latex_elements = {
 latex_documents = [
     ('index',
      'FormEncode-Jinja2.tex',
-     u'{0} Documentation'.format(project),
+     '{0} Documentation'.format(project),
      author,
      'manual'),
 ]
@@ -242,7 +242,7 @@ latex_documents = [
 man_pages = [
     ('index',
      project.lower(),
-     u'{0} Documentation'.format(project),
+     '{0} Documentation'.format(project),
      [author],
      1)
 ]
@@ -259,7 +259,7 @@ man_pages = [
 texinfo_documents = [
     ('index',
      project,
-     u'{0} Documentation'.format(project),
+     '{0} Documentation'.format(project),
      author,
      project,
      'One line description of project.',

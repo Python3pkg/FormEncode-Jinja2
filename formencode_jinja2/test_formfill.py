@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 import jinja2
-from formfill import FormFillExtension
+from .formfill import FormFillExtension
 
 
 @pytest.fixture
@@ -11,7 +11,7 @@ def jinja_env():
 
 
 def test_with_literal_arguments(jinja_env):
-    template = u'''
+    template = '''
     {% formfill {'username': 'john doe'}
            with {'username': 'Invalid Username'} -%}
     <form action="account/signin" method="POST">
@@ -20,7 +20,7 @@ def test_with_literal_arguments(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" class="error" value="john doe" />
         <span class="error-message">Invalid Username</span>
@@ -31,7 +31,7 @@ def test_with_literal_arguments(jinja_env):
 
 
 def test_with_variables(jinja_env):
-    template = u'''
+    template = '''
     {% formfill defaults with errors -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -39,7 +39,7 @@ def test_with_variables(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" class="error" value="john doe" />
         <span class="error-message">Invalid Username</span>
@@ -54,7 +54,7 @@ def test_with_variables(jinja_env):
 
 
 def test_with_expr(jinja_env):
-    template = u'''
+    template = '''
     {% formfill form.defaults
            with form.errors -%}
     <form action="account/signin" method="POST">
@@ -63,7 +63,7 @@ def test_with_expr(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" class="error" value="john doe" />
         <span class="error-message">Invalid Username</span>
@@ -80,7 +80,7 @@ def test_with_expr(jinja_env):
 
 
 def test_without_errors(jinja_env):
-    template = u'''
+    template = '''
     {% formfill {'username': 'louis'} -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -88,7 +88,7 @@ def test_without_errors(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" value="louis" />
         
@@ -99,7 +99,7 @@ def test_without_errors(jinja_env):
 
 
 def test_without_args(jinja_env):
-    template = u'''
+    template = '''
     {% formfill -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -108,7 +108,7 @@ def test_without_args(jinja_env):
     {%- endformfill %}'''
     with pytest.raises(jinja2.TemplateSyntaxError):
         jinja_env.from_string(template).render()
-    template2 = u'''
+    template2 = '''
     {% formfill {'username': 'george'} with -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -120,7 +120,7 @@ def test_without_args(jinja_env):
 
 
 def test_with_wrong_args(jinja_env):
-    template = u'''
+    template = '''
     {% formfill 'michile' -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -130,7 +130,7 @@ def test_with_wrong_args(jinja_env):
     with pytest.raises(TypeError) as exc:
         jinja_env.from_string(template).render()
     assert "not 'michile'" in str(exc)
-    template2 = u'''
+    template2 = '''
     {% formfill {'username': 'austin'} with ['Invalid Username'] -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -145,7 +145,7 @@ def test_with_wrong_args(jinja_env):
 def test_configure(jinja_env):
     jinja_env.formfill_config.update(error_class='fail',
                                      auto_insert_errors=False)
-    template = u'''
+    template = '''
     {% formfill {'username': 'john doe'}
            with {'username': 'Invalid username',
                  'password': 'Required'} -%}
@@ -155,7 +155,7 @@ def test_configure(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" class="fail" value="john doe" />
         <span class="error-message">Invalid username</span>
@@ -170,7 +170,7 @@ def test_configure_formfill_error_formatter(jinja_env):
         return '<ul class="errors"><li>{0}</li></ul>'.format(error)
     assert 'default' in jinja_env.formfill_error_formatters
     jinja_env.formfill_error_formatters['list'] = list_error_formatter
-    template = u'''
+    template = '''
     {% formfill {'username': 'robert'}
            with {'username': 'Invalid username'} -%}
     <form action="account/signin" method="POST">
@@ -179,7 +179,7 @@ def test_configure_formfill_error_formatter(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" class="error" value="robert" />
         <ul class="errors"><li>Invalid username</li></ul>
@@ -190,7 +190,7 @@ def test_configure_formfill_error_formatter(jinja_env):
 
 
 def test_with_non_ascii_text(jinja_env):
-    template = u'''
+    template = '''
     {% formfill {'username': '박재상', 'twitter': '@psy_oppa'}
            with {'username': 'Sorry for rocking with 강남스타일'} -%}
     <form action="account/register" method="POST">
@@ -200,7 +200,7 @@ def test_with_non_ascii_text(jinja_env):
         <input type="text" name="twitter" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/register" method="POST">
         <input type="text" name="username" class="error" value="박재상" />
         <span class="error-message">Sorry for rocking with 강남스타일</span>
@@ -212,7 +212,7 @@ def test_with_non_ascii_text(jinja_env):
 
 
 def test_undefined_variables(jinja_env):
-    template = u'''
+    template = '''
     {% formfill formdata with errors -%}
     <form action="account/signin" method="POST">
         <input type="text" name="username" />
@@ -220,7 +220,7 @@ def test_undefined_variables(jinja_env):
         <input type="password" name="password" />
     </form>
     {%- endformfill %}'''
-    expected = u'''
+    expected = '''
     <form action="account/signin" method="POST">
         <input type="text" name="username" value="" />
         
